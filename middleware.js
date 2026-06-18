@@ -41,8 +41,14 @@ const clerk = clerkMiddleware(async (auth, req) => {
 });
 
 // Chain middlewares - ArcJet runs first, then Clerk
-export default createMiddleware(aj, clerk);
+const ajClerk = createMiddleware(aj, clerk);
 
+export default function middleware(req, evt) {
+  if (req.nextUrl.pathname.startsWith("/api/inngest")) {
+    return NextResponse.next();
+  }
+  return ajClerk(req, evt);
+}
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params

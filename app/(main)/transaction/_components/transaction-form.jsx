@@ -69,7 +69,8 @@ export function AddTransactionForm({
             type: "EXPENSE",
             amount: "",
             description: "",
-            accountId: accounts.find((ac) => ac.isDefault)?.id,
+            accountId: accounts.find((ac) => ac.isDefault)?.id ?? "",
+            category: categories.find((category) => category.type === "EXPENSE")?.id ?? "",
             date: new Date(),
             isRecurring: false,
           },
@@ -97,7 +98,9 @@ export function AddTransactionForm({
   const handleScanComplete = (scannedData) => {
     if (scannedData) {
       setValue("amount", scannedData.amount.toString());
-      setValue("date", new Date(scannedData.date));
+      // Commenting out the AI date so it always defaults to today's date
+      // setValue("date", new Date(scannedData.date));
+      setValue("date", new Date());
       if (scannedData.description) {
         setValue("description", scannedData.description);
       }
@@ -123,6 +126,8 @@ export function AddTransactionForm({
   const type = watch("type");
   const isRecurring = watch("isRecurring");
   const date = watch("date");
+  const accountId = watch("accountId") ?? "";
+  const categoryId = watch("category") ?? "";
 
   const filteredCategories = categories.filter(
     (category) => category.type === type
@@ -139,8 +144,8 @@ export function AddTransactionForm({
       <div className="space-y-2">
         <label className="text-sm font-medium">Type</label>
         <Select
+          value={type}
           onValueChange={(value) => setValue("type", value)}
-          defaultValue={type}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select type" />
@@ -173,8 +178,8 @@ export function AddTransactionForm({
         <div className="space-y-2">
           <label className="text-sm font-medium">Account</label>
           <Select
+            value={accountId}
             onValueChange={(value) => setValue("accountId", value)}
-            defaultValue={getValues("accountId")}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select account" />
@@ -205,8 +210,8 @@ export function AddTransactionForm({
       <div className="space-y-2">
         <label className="text-sm font-medium">Category</label>
         <Select
+          value={categoryId}
           onValueChange={(value) => setValue("category", value)}
-          defaultValue={getValues("category")}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select category" />
