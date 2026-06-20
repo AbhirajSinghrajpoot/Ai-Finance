@@ -45,9 +45,9 @@ const HeroSection = () => {
             </Button>
           </Link>
 
-          <Link href="https://www.youtube.com/roadsidecoder" target="_blank">
+          <Link href="https://wizards-portfolio.vercel.app/" target="_blank">
             <Button size="lg" variant="outline" className="px-8">
-              Watch Demo
+              About Us
             </Button>
           </Link>
         </div>
